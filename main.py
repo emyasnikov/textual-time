@@ -20,6 +20,14 @@ class TimeApp(App):
         yield DataTable()
         yield Footer()
 
+    def on_mount(self) -> None:
+        table = self.query_one(DataTable)
+        query = Records.select().dicts()
+        for column in query[0].keys():
+            table.add_column(column)
+        rows = [d.values() for d in query]
+        table.add_rows(rows)
+
 
 if __name__ == "__main__":
     app = TimeApp()
